@@ -61,9 +61,9 @@ class hgmm(jointGMM):
         verbose         = kwargs.get('verbose',True)
         
         if verbose:
-            print 'starting aicFit(...)'
-            print 'compRange = {0}'.format(compRange)
-            print 'minCovar  = {0}'.format(min_covar)
+            print('starting aicFit(...)')
+            print('compRange = {0}'.format(compRange))
+            print('minCovar  = {0}'.format(min_covar))
             start = time.time()
             
         clfList = [sklearn.mixture.GMM(n_components    = c, 
@@ -92,8 +92,8 @@ class hgmm(jointGMM):
         self.covariance_type = covariance_type
         
         if verbose:
-            print 'Finished aicFit(...) in {0} seconds'.format(time.time()-start)
-            print 'Minimum AIC = {0}'.format(aicList[argMinAic])
-            print 'Number of components = {0}'.format(compRange[argMinAic])
-                
+            print('Finished aicFit(...) in {0} seconds'.format(time.time() - start))
+            print('Minimum AIC = {0}'.format(aicList[argMinAic]))
+            print('Number of components = {0}'.format(compRange[argMinAic]))
+
         return clfList[argMinAic], aicList, compRange
