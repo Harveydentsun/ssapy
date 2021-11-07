@@ -28,8 +28,8 @@ def jointLocalUpdateMc(bundles, revenue, bids, targetBid, samples, verbose = Fal
         muj += revenue[posIdx]-revenue[negIdx]
     
     if verbose:
-        print muj / samples.shape[0]
-        
+        print(muj / samples.shape[0])
+
     return muj/samples.shape[0]
 
 def jointLocalUpdateMcDict(bundleRevenueDict, bids, targetBid, samples, verbose = False):
@@ -47,8 +47,8 @@ def jointLocalUpdateMcDict(bundleRevenueDict, bids, targetBid, samples, verbose 
         muj += (bundleRevenueDict[tuple(posBundle)] - bundleRevenueDict[tuple(negBundle)])
         
     if verbose:
-        print muj / samples.shape[0]
-        
+        print(muj / samples.shape[0])
+
     return muj / samples.shape[0]
 
 def jointLocalMc(bundles, revenue, initialBids, samples, maxItr = 100, tol = 1e-5, verbose = False, ret = 'bids'):
@@ -60,26 +60,26 @@ def jointLocalMc(bundles, revenue, initialBids, samples, maxItr = 100, tol = 1e-
     for bundle, r in zip(bundles,revenue):
         bundleRevenueDict[tuple(bundle)] = r
     
-    for itr in xrange(maxItr):
+    for itr in range(maxItr):
         oldBids = newBids.copy()
         
-        for gIdx in xrange(m):
+        for gIdx in range(m):
 #            newBids[gIdx] = jointLocalUpdateMc(bundles, revenue, newBids, gIdx, samples, verbose)
             newBids[gIdx] = jointLocalUpdateMcDict(bundleRevenueDict, newBids, gIdx, samples, verbose)
             
         if verbose:
-            print 'newBids = {0}'.format(newBids)
-            
+            print('newBids = {0}'.format(newBids))
+
         d = numpy.linalg.norm(oldBids - newBids)
         
         if verbose:
-            print 'd = {0}'.format(d)
-            
+            print('d = {0}'.format(d))
+
         if d <= tol:
             converged = True
             
             if verbose:
-                print 'converged = {0}'.format(converged)
+                print('converged = {0}'.format(converged))
             break
         
     if ret == 'bids':
@@ -150,7 +150,7 @@ def jointLocalUpdate( bundles, revenue, bids, targetBid, samples, verbose = Fals
         newBid += (posRev - negRev)*p
         
     if verbose:
-        print newBid
+        print(newBid)
 
     return newBid
 
@@ -212,10 +212,10 @@ def jointLocal(bundles, revenue, initialBids, samples, maxItr = 100, tol = 1e-5,
     newBids   = numpy.atleast_1d(initialBids).copy()
     converged = False
     
-    for itr in xrange(maxItr):
+    for itr in range(maxItr):
         oldBids = newBids.copy()
         
-        for gIdx in xrange(m):
+        for gIdx in range(m):
             newBids[gIdx] = jointLocalUpdate(bundles, revenue, newBids, gIdx, samples, verbose)
                 
         d = numpy.linalg.norm(oldBids - newBids)

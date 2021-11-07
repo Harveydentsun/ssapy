@@ -108,13 +108,12 @@ class msAgent(agentBase):
         """
         Print a summary of agent state to standard out.
         """
-        print "Agent Name:              {0}".format(self.name)
-        print "Agent ID:                {0}".format(self.id)
-        print "Agent Type:              {0}".format(self.type())
-        print "Agent lambda           = {0}".format(self.l)
-        print "Agent Valuation Vector = {0}".format(self.v)
-    
-    
+        print("Agent Name:              {0}".format(self.name))
+        print("Agent ID:                {0}".format(self.id))
+        print("Agent Type:              {0}".format(self.type()))
+        print("Agent lambda           = {0}".format(self.l))
+        print("Agent Valuation Vector = {0}".format(self.v))
+
     def finalSurplus(self):
         numpy.testing.assert_(isinstance(self.bundleWon,numpy.ndarray),
             msg="invalid self.bundleWon")

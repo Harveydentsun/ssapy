@@ -59,12 +59,12 @@ def listRevenue(bundles, v, l):
         valution[i] is the revenue the agent would receive had
         he/she been able to procure the collection of goods bundle[i]. 
     """
-    if bundles == None:
+    if bundles.all == None:
         bundles = listBundles(numpy.atleast_1d(v).shape[0])
     else:
         bundles = numpy.atleast_2d(bundles)
     
-    cs = [numpy.atleast_1d(i) for i in itertools.imap(numpy.cumsum,bundles)]
+    cs = [numpy.atleast_1d(i) for i in map(numpy.cumsum,bundles)]
         
     valuation = []
     for bundle in cs:

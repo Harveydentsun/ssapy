@@ -11,11 +11,11 @@ class jointHist(object):
             if m == None:
                 raise ValueError("Must specify number of dimentions - m")
             self.bins = []
-            for i in xrange(m):
+            for i in range(m):
                 self.bins.append(numpy.arange(0,51,1))
             
         dims = []
-        for i in xrange(m):
+        for i in range(m):
             dims.append(self.bins[i].shape[0]-1)
         
         self.counts = numpy.zeros(dims)
@@ -74,6 +74,6 @@ class jointHist(object):
                 
 if __name__ == "__main__":
     h = jointHist(m=2)
-    print 'h.bins   = {0}'.format(h.bins)
-    print 'h.counts = {0}'.format(h.counts)
+    print('h.bins   = {0}'.format(h.bins))
+    print('h.counts = {0}'.format(h.counts))
     pass

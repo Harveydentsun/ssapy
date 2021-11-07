@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 #import os
 #import copy
 
-isnumber = lambda n: isinstance(n, (int, float, long, complex))
+isnumber = lambda n: isinstance(n, (int, float, complex, numpy.int32))
 
 machine_precision = numpy.finfo(numpy.double).eps
 
@@ -37,9 +37,9 @@ class dokHist(object):
 #                                       for i in xrange(m)])
             
             self.bins = []
-            for i in xrange(m):
+            for i in range(m):
                 self.bins.append([0])
-                for j in xrange(0,51):
+                for j in range(0,51):
                     self.bins[i].append(j)
                     
         self.type = kwargs.get(type, 'discrete')
@@ -217,7 +217,7 @@ class dokHist(object):
         
         #1. sample ranges
         range_samples = []
-        for i in xrange(n_samples):
+        for i in range(n_samples):
             range_samples.append(keys[numpy.random.multinomial(1,p).argmax()])
             
         #2. sample uniformly from ranges
@@ -233,7 +233,7 @@ class dokHist(object):
                     sample = r[0][0] + machine_precision + numpy.random.uniform()
             else:
                 sample = numpy.zeros(dim)
-                for dim_idx in xrange(len(r)):
+                for dim_idx in range(len(r)):
                     if r[dim_idx][0] == r[dim_idx][1]:
                         sample[dim_idx] = r[dim_idx][0]
                     else:

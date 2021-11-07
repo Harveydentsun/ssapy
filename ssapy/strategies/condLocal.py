@@ -57,15 +57,15 @@ def condLocalLimitUpdate(bundles, revenue, bids,
         else:
             p1 = numpy.float(numpy.count_nonzero( numpy.all(goodsWon == posBundle, 1) ) )
             if verbose:
-                print '\t#({0}) = {1}'.format(posBundle, p1)
-                print '\t#({0} = True) = {1}'.format(targetBid, normWon)
-                 
+                print('\t#({0}) = {1}'.format(posBundle, p1))
+                print('\t#({0} = True) = {1}'.format(targetBid, normWon))
+
             p1 /= normWon
             
         if verbose:
-            print 'p({0} | {1} = True ) = {2}'.format(posBundle,targetBid,p1)
-             
-#        p1 = numpy.count_nonzero( numpy.all(goodsWon == posBundle, 1) )
+            print('p({0} | {1} = True ) = {2}'.format(posBundle, targetBid, p1))
+
+        #        p1 = numpy.count_nonzero( numpy.all(goodsWon == posBundle, 1) )
 #        p1 = numpy.float(p1) / (normWon + 1)
         if p1 > 1.0:
             raise ValueError ("p1 = {0} > 1.0".format(p1))
@@ -82,14 +82,14 @@ def condLocalLimitUpdate(bundles, revenue, bids,
 #            p0 = numpy.float(numpy.count_nonzero( numpy.all(goodsWon == negBundle, 1) )) / normLost
             p0 = numpy.float(numpy.count_nonzero( numpy.all(goodsWon == negBundle, 1) ))
             if verbose:
-                print '\t#({0}) = {1}'.format(negBundle, p0)
-                print '\t#({0} = True) = {1}'.format(targetBid, normLost)
-            
-            p0 /= normLost
+                print('\t#({0}) = {1}'.format(negBundle, p0))
+                print('\t#({0} = True) = {1}'.format(targetBid, normLost))
+
+        p0 /= normLost
         
         if verbose:
-            print 'p({0} | {1} = False) = {2}'.format(posBundle,targetBid,p0)
-        
+            print('p({0} | {1} = False) = {2}'.format(posBundle, targetBid, p0))
+
         if p0 > 1.0:
             raise ValueError ("p0 = {0} > 1.0".format(p0))
         
@@ -100,8 +100,8 @@ def condLocalLimitUpdate(bundles, revenue, bids,
         newBid += ((revenue[posIdx]*p1) - (revenue[negIdx]*p0))
         
     if verbose:
-        print newBid
-        
+        print(newBid)
+
     return newBid
 
 def condLocalLimit(bundles, revenue, initialBids, 
@@ -155,10 +155,10 @@ def condLocalLimit(bundles, revenue, initialBids,
     newBids = numpy.atleast_1d(initialBids).copy()
     converged = False
     
-    for itr in xrange(maxItr):
+    for itr in range(maxItr):
         oldBid = newBids.copy()
         
-        for gIdx in xrange(m):
+        for gIdx in range(m):
             newBids[gIdx] = condLocalLimitUpdate(bundles, revenue, newBids, gIdx, samples, verbose)
             
         d = numpy.linalg.norm(oldBid-newBids)
@@ -221,15 +221,14 @@ def condLocalUpdate(bundles, revenue, bids,
         p1 = numpy.count_nonzero( numpy.all(goodsWon == posBundle, 1) ) + eps
         
         if verbose:
-            print '\t#({0}) = {1}'.format(posBundle, p1)
-            print '\t#({0} = True) = {1}'.format(targetBid, normWon)
-            
+            print('\t#({0}) = {1}'.format(posBundle, p1))
+            print('\t#({0} = True) = {1}'.format(targetBid, normWon))
+
         p1 = numpy.float(p1) / (normWon + 2*eps)
         
            
         if verbose:
-            print 'p({0} | {1} = True ) = {2}'.format(posBundle,targetBid,p1)
-             
+            print('p({0} | {1} = True ) = {2}'.format(posBundle, targetBid, p1))
 
         if p1 > 1.0:
             raise ValueError ("p1 = {0} > 1.0".format(p1))
@@ -240,17 +239,17 @@ def condLocalUpdate(bundles, revenue, bids,
         p0 = numpy.float(numpy.count_nonzero( numpy.all(goodsWon == negBundle, 1) )) + eps
         
         if verbose:
-            print '\t#({0}) = {1}'.format(negBundle, p0)
-            print '\t#({0} = True) = {1}'.format(targetBid, normLost)
-            
+            print('\t#({0}) = {1}'.format(negBundle, p0))
+            print('\t#({0} = True) = {1}'.format(targetBid, normLost))
+
         p0 = numpy.float(p0) / ( normLost +  2*eps )
 
 #        p0 = numpy.float(numpy.count_nonzero( numpy.all(goodsWon == negBundle, 1) ))
         
                 
         if verbose:
-            print 'p({0} | {1} = False) = {2}'.format(posBundle,targetBid,p0)
-        
+            print('p({0} | {1} = False) = {2}'.format(posBundle, targetBid, p0))
+
         if p0 > 1.0:
             raise ValueError ("p0 = {0} > 1.0".format(p0))
         
@@ -261,8 +260,8 @@ def condLocalUpdate(bundles, revenue, bids,
         newBid += ((revenue[posIdx]*p1) - (revenue[negIdx]*p0))
         
     if verbose:
-        print newBid
-        
+        print(newBid)
+
     return newBid
 
 def condLocal(bundles, revenue, initialBids, 
@@ -316,10 +315,10 @@ def condLocal(bundles, revenue, initialBids,
     newBids = numpy.atleast_1d(initialBids).copy()
     converged = False
     
-    for itr in xrange(maxItr):
+    for itr in range(maxItr):
         oldBid = newBids.copy()
         
-        for gIdx in xrange(m):
+        for gIdx in range(m):
             newBids[gIdx] = condLocalUpdate(bundles, revenue, 
                                             newBids, gIdx, samples, 
                                             eps=eps, verbose = verbose)
@@ -387,15 +386,15 @@ def condLocalZeroUpdate(bundles, revenue, bids,
         else:
             p1 = numpy.float(numpy.count_nonzero( numpy.all(goodsWon == posBundle, 1) ) )
             if verbose:
-                print '\t#({0}) = {1}'.format(posBundle, p1)
-                print '\t#({0} = True) = {1}'.format(targetBid, normWon)
-                 
+                print('\t#({0}) = {1}'.format(posBundle, p1))
+                print('\t#({0} = True) = {1}'.format(targetBid, normWon))
+
             p1 /= normWon
             
         if verbose:
-            print 'p({0} | {1} = True ) = {2}'.format(posBundle,targetBid,p1)
-             
-#        p1 = numpy.count_nonzero( numpy.all(goodsWon == posBundle, 1) )
+            print('p({0} | {1} = True ) = {2}'.format(posBundle, targetBid, p1))
+
+        #        p1 = numpy.count_nonzero( numpy.all(goodsWon == posBundle, 1) )
 #        p1 = numpy.float(p1) / (normWon + 1)
         if p1 > 1.0:
             raise ValueError ("p1 = {0} > 1.0".format(p1))
@@ -412,14 +411,14 @@ def condLocalZeroUpdate(bundles, revenue, bids,
 #            p0 = numpy.float(numpy.count_nonzero( numpy.all(goodsWon == negBundle, 1) )) / normLost
             p0 = numpy.float(numpy.count_nonzero( numpy.all(goodsWon == negBundle, 1) ))
             if verbose:
-                print '\t#({0}) = {1}'.format(negBundle, p0)
-                print '\t#({0} = True) = {1}'.format(targetBid, normLost)
-            
+                print('\t#({0}) = {1}'.format(negBundle, p0))
+                print('\t#({0} = True) = {1}'.format(targetBid, normLost))
+
             p0 /= normLost
         
         if verbose:
-            print 'p({0} | {1} = False) = {2}'.format(posBundle,targetBid,p0)
-        
+            print('p({0} | {1} = False) = {2}'.format(posBundle, targetBid, p0))
+
         if p0 > 1.0:
             raise ValueError ("p0 = {0} > 1.0".format(p0))
         
@@ -430,8 +429,8 @@ def condLocalZeroUpdate(bundles, revenue, bids,
         newBid += ((revenue[posIdx]*p1) - (revenue[negIdx]*p0))
         
     if verbose:
-        print newBid
-        
+        print(newBid)
+
     return newBid
     
 def condLocalZero(bundles, revenue, initialBids, 
@@ -485,10 +484,10 @@ def condLocalZero(bundles, revenue, initialBids,
     newBids = numpy.atleast_1d(initialBids).copy()
     converged = False
     
-    for itr in xrange(maxItr):
+    for itr in range(maxItr):
         oldBid = newBids.copy()
         
-        for gIdx in xrange(m):
+        for gIdx in range(m):
             newBids[gIdx] = condLocalZeroUpdate(bundles, revenue, newBids, gIdx, samples, verbose)
             
         d = numpy.linalg.norm(oldBid-newBids)
@@ -560,10 +559,10 @@ def condLocalMc(bundles, revenue, initBids, samples,
     if m != samples.shape[1]:
         raise ValueError("m != samples.shape[1]")
     
-    for itr in xrange(maxItr):
+    for itr in range(maxItr):
         oldBids = newBids.copy()
         
-        for gIdx in xrange(m):
+        for gIdx in range(m):
             newBids[gIdx] = condLocalMcUpdate(brd, newBids, gIdx, samples, pad, verbose)
         
         d = numpy.linalg.norm(oldBids-newBids)
@@ -602,8 +601,8 @@ def condMVLocalUpdate(bundleRevenueDict, bids, j, samples, verbose = False):
     newBid /= samplesjwon.shape[0]
     
     if verbose:
-        print '\tNew bid = {0}'.format(newBid)
-        
+        print('\tNew bid = {0}'.format(newBid))
+
     return newBid
 
 def condMVLocal(bundles, revenue, initBids, samples, 
@@ -617,10 +616,10 @@ def condMVLocal(bundles, revenue, initBids, samples,
     for b,r in zip(bundles,revenue):
         brd[tuple(b)] = r
     
-    for itr in xrange(maxItr):
+    for itr in range(maxItr):
         oldBids = newBids.copy()
         
-        for gIdx in xrange(m):
+        for gIdx in range(m):
             newBids[gIdx] = condMVLocalUpdate(brd, 
                                oldBids, gIdx, samples, verbose)
             

@@ -20,14 +20,14 @@ class test_condLocalBid(unittest.TestCase):
     
     def test_condLocalUpdate(self):
         ibids = [25.,25.]
-        print ibids
+        print(ibids)
         targetBid = 0
         ibids[targetBid] = condLocalUpdate(self.bundles2d, self.revenue2d, 
                                            ibids, targetBid, self.samples2d, True)
-        
-        print ibids
-        
-#    def test_condLocal(self):
+
+        print(ibids)
+
+    #    def test_condLocal(self):
 #        ibids = [25.,25.]
 #        print ibids
 #        newBids,converged,itr,l = condLocal(self.bundles2d, self.revenue2d, ibids, 
@@ -86,22 +86,21 @@ class test_condLocalBid(unittest.TestCase):
         l = 1
         v = [45,20]
         revenue = msListRevenue(bundles, v, l)
-        
-        print bundles
-        print revenue
+
+        print(bundles)
+        print(revenue)
         brd = {}
         for b,r in zip(bundles,revenue):
             brd[tuple(b)] = r
-        newbid = condMVLocalUpdate(brd, initbids, 0, samples, True) 
-                                         
-        
-        print newbid
-        
+        newbid = condMVLocalUpdate(brd, initbids, 0, samples, True)
+
+        print(newbid)
+
         bids = condMVLocal(bundles,revenue, initbids, samples)
-        
-        print bids
-        
-       
+
+        print(bids)
+
+
 #    def test_condLocal1(self):
 #        samples = numpy.zeros((1000,2))
 #        samples[:100,:] = numpy.asarray([20,15])

@@ -25,7 +25,7 @@ class test_dokHist(unittest.TestCase):
         self.assertEqual(marg_hist.density(1), 0.5, "marg_hist.density(1) != 0.5")
         self.assertEqual(marg_hist.density(2), 0.5, "marg_hist.density(2) != 0.5")
         
-        for i in xrange(3,50):
+        for i in range(3,50):
             self.assertEqual(marg_hist.density(i), 0.0, "marg_hist.density({0}) != .5".format(i))
             
             

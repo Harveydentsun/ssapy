@@ -20,9 +20,9 @@ def targetMV(bundles, revenue, pricePrediction, verbose = False):
                                   
     
     if verbose:
-        print "optBundle  = {0}".format(optBundle)
-        print "optSurplus = {0}".format(optSurplus)
-        
+        print("optBundle  = {0}".format(optBundle))
+        print("optSurplus = {0}".format(optSurplus))
+
     n_goods = bundles.shape[1]
     bid = numpy.zeros(n_goods, dtype = numpy.float)
     
@@ -32,8 +32,8 @@ def targetMV(bundles, revenue, pricePrediction, verbose = False):
                                            pricePrediction, goodIdx)
             
     if verbose:
-        print "bid = {0}".format(bid)
-        
+        print("bid = {0}".format(bid))
+
     return bid
 
 if __name__ == "__main__":
@@ -47,10 +47,10 @@ if __name__ == "__main__":
     v = [20, 10]
     
     valuation = listRevenue(bundles, v, l)
-    
-    print bundles
-    print valuation
-    
+
+    print(bundles)
+    print(valuation)
+
     bid = targetMV(bundles, valuation, pp, True)
     
     

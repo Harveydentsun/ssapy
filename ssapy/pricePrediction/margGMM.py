@@ -23,7 +23,7 @@ class igmm(object):
         self.gmmlist = None
         
         if self.m != None:
-            self.gmmlist = [sklearn.mixture.GMM(n_components    = kwargs.get('n_components',1),
+            self.gmmlist = [sklearn.mixture.GaussianMixture(n_components    = kwargs.get('n_components',1),
                                               covariance_type = kwargs.get('covariance_type','diag'),
                                               random_state    = kwargs.get('random_state',None),
                                               thresh           = kwargs.get('thresh', 1e-2),
@@ -31,7 +31,7 @@ class igmm(object):
                                               n_iter          = kwargs.get('n_iter',100),
                                               n_init          = kwargs.get('n_init',1),
                                               params          = kwargs.get('params','wmc'),
-                                              init_params     = kwargs.get('init_params','wmc')) for d in xrange(self.m)]
+                                              init_params     = kwargs.get('init_params','wmc')) for d in range(self.m)]
             
     def sample(self,**kwargs):
         minPrice = kwargs.get('minPrice', self.minPrice)
@@ -44,7 +44,7 @@ class igmm(object):
         
         samples = numpy.zeros((n_samples,self.m))
         
-        for d in xrange(self.m):
+        for d in range(self.m):
             gmm = self.gmmlist[d]
             cnt = 0
             while cnt < n_samples:
@@ -71,19 +71,19 @@ class igmm(object):
                verbose = True):
         
         if verbose:
-            print 'starting aicFit(...)'
-            print 'compRange = {0}'.format(compRange)
-            print 'minCovar  = {0}'.format(min_covar)
+            print('starting aicFit(...)')
+            print('compRange = {0}'.format(compRange))
+            print('minCovar  = {0}'.format(min_covar))
             start = time.time()
             
         m = X.shape[1]
         
         minAicList = []
         nCompList = []
-        for d in xrange(m):
+        for d in range(m):
             if verbose:
-                print 'Fitting dimension {0}'.format(d)
-            clfList = [sklearn.mixture.GMM(n_components    = c, 
+                print('Fitting dimension {0}'.format(d))
+            clfList = [sklearn.mixture.GaussianMixture(n_components    = c,
                                            covariance_type = 'diag',
                                            min_covar       = min_covar,
                                            thresh          = thresh,
@@ -105,9 +105,9 @@ class igmm(object):
             
         if verbose:
             end = time.time()
-            print 'Finished aicFit(...) in {0} seconds'.format(end - start)
-            print 'Number of Components in each dimension: {0}'.format(nCompList)
-            
+            print('Finished aicFit(...) in {0} seconds'.format(end - start))
+            print('Number of Components in each dimension: {0}'.format(nCompList))
+
         return minAicList, nCompList
     
     def plt(self, ofile = None, minPrice = 0, maxPrice = 50, npts = 1000, colors = None, 

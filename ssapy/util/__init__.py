@@ -28,7 +28,7 @@ def bundle2idx(bundle = None):
         numpy.testing.assert_(bundle.dtype == bool,
                               msg="bundle.dtype = {0} != bool".format(bundle.dtype))
         idx = 0
-        for i in xrange(bundle.shape[0]):
+        for i in range(bundle.shape[0]):
             idx = (2**((bundle.shape[0]-1)-i))*bundle[i]
             
         return idx
@@ -53,9 +53,9 @@ def idx2bundle(index, nGoods = 5):
         
     # just checking the index wasn't
     # past the maximum bundle
-    if len(binList) > nGoods: raise ValueError, "simYW::bundleFromIndex Error: Dec-Binary Conversion."
+    if len(binList) > nGoods: raise ValueError("simYW::bundleFromIndex Error: Dec-Binary Conversion.")
     
-    for i in xrange(nGoods-len(binList)):
+    for i in range(nGoods-len(binList)):
         binList.insert(0,0)
         
     return numpy.atleast_1d(binList)
@@ -98,7 +98,7 @@ def cost(bundles, price):
         priceInfZero[unobtainableGoods] = 0
         
         cost = []
-        for idx in xrange(bundles.shape[0]):
+        for idx in range(bundles.shape[0]):
             if (bundles[idx][unobtainableGoods] == 0).all():
                 cost.append(numpy.dot(bundles[idx],priceInfZero))
             else:
@@ -198,7 +198,7 @@ def acq(bundles, revenue, priceVector, verbose = False, ties = 'random'):
     optSurplus = splus[argMax]
      
     if verbose:
-        print "acq(...): Computing Optimal Bundle"
+        print("acq(...): Computing Optimal Bundle")
         table = []
         table.append(["Bundles", "Revenue", "Cost", "Surplus", "argmax"])
         

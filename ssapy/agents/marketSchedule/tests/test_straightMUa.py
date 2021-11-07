@@ -9,9 +9,9 @@ class test_straightMUa(unittest.TestCase):
         pricePrediction = jointGMM()
         pricePrediction.means_  = numpy.asarray([[10,5], [0,5]],dtype='float')
         pricePrediction.weights_ = numpy.asarray([0.5,0.5],dtype = 'float')
-        
-        print pricePrediction.expectedValue()
-        
+
+        print(pricePrediction.expectedValue())
+
         agent = straightMUa(pricePrediction = pricePrediction, v = [20.,10.], l = 1)
         
         numpy.testing.assert_equal(agent.bid(),[15.,0.], "test_straightMUa.test_straightMUa_jointGMM - failed.",True)

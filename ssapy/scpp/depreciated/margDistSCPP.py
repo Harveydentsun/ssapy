@@ -48,7 +48,7 @@ class margDistSCPP(object):
                         self.m = len(margDist)
                     else:
                         self.m = 1
-            elif isinstance(margDist, basestring):
+            elif isinstance(margDist, str):
                 filename, fileExt = os.path.splitext(margDist)
                 if fileExt == '.pkl':
                     self.loadPickle(margDist)
@@ -63,7 +63,7 @@ class margDistSCPP(object):
 
         elif args:
             
-            if isinstance(args[0],basestring):
+            if isinstance(args[0],str):
                 filename, fileExt = os.path.splitext(args[0])
                 if fileExt == '.pkl':
                     self.loadPickle(args[0])
@@ -147,8 +147,8 @@ class margDistSCPP(object):
             return numpy.mean(samples,0)
             
         else:
-            print 'margDistSCPP.expectedPrices()'
-            print 'Unknown method'
+            print('margDistSCPP.expectedPrices()')
+            print('Unknown method')
             raise AssertionError
     
     @staticmethod
@@ -250,7 +250,7 @@ class margDistSCPP(object):
                               format(expectedPrices.shape[0],len(self.data)))
         
         upv = []
-        for idx in xrange(expectedPrices.shape[0]):
+        for idx in range(expectedPrices.shape[0]):
             #get the prices
             binEdges = numpy.atleast_1d(self.data[idx][1])
             
@@ -468,12 +468,12 @@ class margDistSCPP(object):
         
         samples = numpy.zeros((n_samples,len(self.data)))
         
-        for goodIdx in xrange(len(self.data)):
+        for goodIdx in range(len(self.data)):
             hist,binEdges = self.data[goodIdx]
             
             p = hist / numpy.float( numpy.dot(hist, numpy.diff(binEdges)) )
             
-            for sampIdx in xrange(n_samples):
+            for sampIdx in range(n_samples):
                 samples[sampIdx,goodIdx] = binEdges[numpy.random.multinomial(1,p).argmax()]
                 
         return samples
@@ -499,7 +499,7 @@ class margDistSCPP(object):
         fig = plt.figure()
         ax = fig.add_subplot(111)
         
-        for i in xrange(len(self.data)):
+        for i in range(len(self.data)):
             ax.plot(.5*(self.data[i][1][:-1]+self.data[i][1][1:]),self.data[i][0],colorStyles[i],label='Slot {0}'.format(i))
             
         if 'xlabel' in kwargs:
@@ -539,7 +539,7 @@ class margDistSCPP(object):
         fig = plt.figure()
         ax = fig.add_subplot(111)
         
-        for i in xrange(len(self.data)):
+        for i in range(len(self.data)):
             ax.plot(.5*(self.data[i][1][:-1]+self.data[i][1][1:]),numpy.cumsum(self.data[i][0]),colorStyles[i],label='Slot {0}'.format(i))
             
         if 'xlabel' in kwargs:
@@ -569,7 +569,7 @@ class margDistSCPP(object):
         fig = plt.figure()
         ax = fig.add_subplot(111)
         
-        for i in xrange(len(self.data)):
+        for i in range(len(self.data)):
             ax.plot(.5*(self.data[i][1][:-1]+self.data[i][1][1:]),self.data[i][0],c=colorStyles[i],label='Good {0}'.format(i))
             
         if 'xlabel' in kwargs:

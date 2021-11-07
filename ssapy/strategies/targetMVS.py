@@ -22,18 +22,18 @@ def targetMVS(bundles, revenue, pricePrediction, verbose = False):
     ppCopy[~optBundle] = numpy.float('inf')
     
     if verbose:
-        print "Computing bid via targetMVS"
-        print "Optimal Bundle = {0}".format(optBundle.astype('int'))
-        print "Price Prediction Copy = {0}".format(ppCopy)
-    
+        print("Computing bid via targetMVS")
+        print("Optimal Bundle = {0}".format(optBundle.astype('int')))
+        print("Price Prediction Copy = {0}".format(ppCopy))
+
     bids = numpy.zeros(ppView.shape[0])
     
     for goodIdx in numpy.flatnonzero(optBundle == True):
         bids[goodIdx] = marginalUtility(bundles, revenue, ppCopy, goodIdx)
     
     if verbose:
-        print "bids = {0}".format(bids)    
-        
+        print("bids = {0}".format(bids))
+
     return bids
 
 if __name__ == "__main__":
@@ -45,10 +45,10 @@ if __name__ == "__main__":
     v = [20,10]
     bundles = listBundles(2)
     rev = listRevenue(bundles, v, l)
-    
-    print bundles
-    print rev
-    
+
+    print(bundles)
+    print(rev)
+
     targetMVS(bundles,rev,pp,True)
             
     

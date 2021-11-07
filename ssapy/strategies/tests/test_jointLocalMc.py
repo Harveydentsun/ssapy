@@ -53,35 +53,36 @@ class test_jointLocalMc(unittest.TestCase):
         bids = numpy.asarray([25.,25.])
         
         bids[0] = jointLocalUpdateMc(bundles,revenue,bids,0,samples,True)
-        print bids
+        print(bids)
         numpy.testing.assert_equal(bids[0], 25, "Update 1.1 Failed", True)
                 
         bids[1] = jointLocalUpdateMc(bundles,revenue,bids,1,samples,True)
-        print bids
+        print(bids)
         numpy.testing.assert_equal(bids[1], 10, "Update 1.2 Failed", True )
                 
         bids[0] = jointLocalUpdateMc(bundles,revenue,bids,0,samples,True)
-        print bids
+        print(bids)
         numpy.testing.assert_equal(bids[0], 45, "Update 2.1 Failed", True)
                 
         bids[1] = jointLocalUpdateMc(bundles,revenue,bids,1,samples,True)
-        print bids
+        print(bids)
         numpy.testing.assert_equal(bids[1], 0, "Update 2.2 Failed", True)
                 
         bids[0] = jointLocalUpdateMc(bundles,revenue,bids,0,samples,True)
-        print bids
+        print(bids)
         numpy.testing.assert_equal(bids[0], 45, "Update 3.1 Failed", True)
                 
         bids[1] = jointLocalUpdateMc(bundles,revenue,bids,1,samples,True)
-        print bids
+        print(bids)
         numpy.testing.assert_equal(bids[1], 0, "Update 3.2 Failed", True)
         
         bids = numpy.asarray([25.,25.])
         bids, converged, itr, tol = jointLocalMc(bundles, revenue, bids, samples, verbose=True,ret='all')
-        print bids
-        print converged
-        print itr
-        print tol
-        
+        print(bids)
+        print(converged)
+        print(itr)
+        print(tol)
+
+
 if __name__ == "__main__":
     unittest.main()  

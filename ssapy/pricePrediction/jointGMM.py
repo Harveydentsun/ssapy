@@ -1,7 +1,7 @@
 import numpy
 import sklearn.mixture
 from scipy.stats import norm
-from mvncdf import mvnormcdf
+from ssapy.pricePrediction.mvncdf import mvnormcdf
 
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -28,7 +28,7 @@ def expectedSurplus(bundleRevenueDict, bidVector, jointGmmPricePrediction, n_sam
     
     return expectedSurplus_(bundleRevenueDict, bidVector, samples)   
 
-class jointGMM(sklearn.mixture.GMM):
+class jointGMM(sklearn.mixture.GaussianMixture):
     """
     A wrapper around sklearn.mixture.GMM to add some additional functionality
     """
@@ -42,12 +42,11 @@ class jointGMM(sklearn.mixture.GMM):
         super(jointGMM,self).__init__(n_components    = kwargs.get('n_components',1),
                                       covariance_type = kwargs.get('covariance_type','full'),
                                       random_state    = kwargs.get('random_state',None),
-                                      thresh          = kwargs.get('thresh', 1e-2),
-                                      min_covar       = kwargs.get('min_covar',1e-3),
-                                      n_iter          = kwargs.get('n_iter',100),
+                                      tol          = kwargs.get('thresh', 1e-2),
+                                      reg_covar       = kwargs.get('min_covar',1e-3),
+                                      max_iter          = kwargs.get('n_iter',100),
                                       n_init          = kwargs.get('n_init',1),
-                                      params          = kwargs.get('params','wmc'),
-                                      init_params     = kwargs.get('init_params','wmc') )
+                                      init_params     = kwargs.get('init_params','kmeans') )
         
     def m(self):
         return self.means_.shape[1]
@@ -103,7 +102,7 @@ class jointGMM(sklearn.mixture.GMM):
     def sampleMarg(self, n_samples = 1000):
         m = self.means_.shape[1]
         samples = numpy.zeros((n_samples,m))
-        for marginalIdx in xrange(m):
+        for marginalIdx in range(m):
             samples[:,marginalIdx] = self.sampleMarg_(marginalIdx, n_samples)
             
         return samples
@@ -135,19 +134,18 @@ class jointGMM(sklearn.mixture.GMM):
         verbose         = kwargs.get('verbose',True)
         
         if verbose:
-            print 'starting aicFit(...)'
-            print 'compRange = {0}'.format(compRange)
-            print 'minCovar  = {0}'.format(min_covar)
+            print ('starting aicFit(...)')
+            print ('compRange = {0}'.format(compRange))
+            print ('minCovar  = {0}'.format(min_covar))
             start = time.time()
             
-        clfList = [sklearn.mixture.GMM(n_components    = c, 
+        clfList = [sklearn.mixture.GaussianMixture(n_components    = c,
                                        covariance_type = covariance_type,
                                        random_state    = random_state,
-                                       min_covar       = min_covar,
-                                       thresh          = thresh,
-                                       n_iter          = n_iter,
+                                       reg_covar       = min_covar,
+                                       tol          = thresh,
+                                       max_iter          = n_iter,
                                        n_init          = n_init,
-                                       params          = params,
                                        init_params     = init_params)\
                                        for c in compRange] 
                                        
@@ -166,9 +164,9 @@ class jointGMM(sklearn.mixture.GMM):
         self.covariance_type = covariance_type
         
         if verbose:
-            print 'Finished aicFit(...) in {0} seconds'.format(time.time()-start)
-            print 'Minimum AIC = {0}'.format(aicList[argMinAic])
-            print 'Number of components = {0}'.format(compRange[argMinAic])
+            print ('Finished aicFit(...) in {0} seconds'.format(time.time()-start))
+            print ('Minimum AIC = {0}'.format(aicList[argMinAic]))
+            print ('Number of components = {0}'.format(compRange[argMinAic]))
                 
         return clfList[argMinAic], aicList, compRange
     
@@ -198,7 +196,7 @@ class jointGMM(sklearn.mixture.GMM):
         
         fig = plt.figure(dpi=100)
         ax  = plt.subplot(111)
-        for goodIdx in xrange(nGoods):
+        for goodIdx in range(nGoods):
             margDist = numpy.zeros(X.shape[0])
             for (w,mean,cov) in zip(self.weights_,self.means_, self.covars_):
                 margMean = mean[goodIdx]
@@ -234,7 +232,7 @@ class jointGMM(sklearn.mixture.GMM):
         
         if self.means_.shape[1] == 2:
             if verbose:
-                print 'plotting joint distribution'
+                print ('plotting joint distribution')
         
             
             f = plt.figure(dpi=100)
@@ -266,7 +264,7 @@ class jointGMM(sklearn.mixture.GMM):
             else:
                 plt.savefig(oFile)
         else:
-            print 'Cannot plot joint distribution surface with dimension greater than 2.'
+            print ('Cannot plot joint distribution surface with dimension greater than 2.')
             
     def heatMap(self,nsamples=10000, cmap='jet', 
                 title = None,
@@ -401,24 +399,24 @@ class jointGMM(sklearn.mixture.GMM):
     def totalCorrelationMC(self, nsamples=10000, ntrials = 20, verbose = True):
         
         if verbose:
-            print 'jointGMM.totalCorrelationMC'
-            print 'n_samples = {0}'.format(nsamples)
-            print 'ntrials = {0}'.format(ntrials)
+            print ('jointGMM.totalCorrelationMC')
+            print ('n_samples = {0}'.format(nsamples))
+            print ('ntrials = {0}'.format(ntrials))
         
         n_features = self.means_.shape[1]
         n_components = self.means_.shape[0]
         milist = numpy.zeros(ntrials)
         
-        for trial in xrange(ntrials):
+        for trial in range(ntrials):
             if verbose:
-                print 'Computing Total Correlation Trial {0}'.format(trial)
+                print ('Computing Total Correlation Trial {0}'.format(trial))
             samples = self.sample(n_samples = nsamples, 
                 minPrice = -numpy.float('inf'), maxPrice = numpy.float('inf'))
             jointLL, resp = self.eval(samples)
             del resp
             margLL = numpy.zeros((samples.shape))
-            for i in xrange(n_features):
-                mdist = sklearn.mixture.GMM(n_components = self.n_components, covariance_type = 'diag')
+            for i in range(n_features):
+                mdist = sklearn.mixture.GaussianMixture(n_components = self.n_components, covariance_type = 'diag')
                 w,m,v  = self.margParams(margIdx = i)
                 mdist.weights_ = numpy.atleast_1d(w)
                 mdist.means_ = numpy.atleast_2d(m).T

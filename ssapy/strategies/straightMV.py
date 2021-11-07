@@ -21,11 +21,11 @@ def straightMV(bundles, revenue, pricePrediction, verbose = False):
     
     n_goods = bundles.shape[1]
     marginalValueBid = numpy.zeros(n_goods,dtype=numpy.float64)
-    for goodIdx in xrange(n_goods):
+    for goodIdx in range(n_goods):
         marginalValueBid[goodIdx] = \
                 marginalUtility(b,rev,pp,goodIdx)
                                  
     if verbose:
-        print marginalValueBid
-                                         
+        print(marginalValueBid)
+
     return marginalValueBid

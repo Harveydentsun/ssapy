@@ -26,7 +26,7 @@ class test_simulateAuction(unittest.TestCase):
         nAgents = 5
         v = [20.,10.]
         l = 1
-        agentList = [agentFactory(agentType = agentType, pricePrediction = pricePrediction, v = v, l = l) for i in xrange(nAgents)]
+        agentList = [agentFactory(agentType = agentType, pricePrediction = pricePrediction, v = v, l = l) for i in range(nAgents)]
         
         bids = collectBids(agentList)
         

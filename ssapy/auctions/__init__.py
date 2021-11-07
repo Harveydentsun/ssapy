@@ -1,4 +1,4 @@
-__all__ = ["auctionBase", "simultaneousAuctions"]
+__all__ = ["auctionBase", "simultaneousAuction"]
 
 from ssapy.agents.agentFactory import agentFactory
 
@@ -41,14 +41,14 @@ def simAuctionHelper(**kwargs):
                              "\t Must specify selfIdx when retType == 'hob'")
             
     if verbose:
-        print 'In simulateAuction(...)'
-        print 'agentType    = {0}'.format(agentType)
-        print 'nGames       = {0}'.format(nGames)
-        print 'm            = {0}'.format(m)
-        print 'minValuation = {0}'.format(minValuation)
-        print 'maxValuation = {0}'.format(maxValuation)
-        print 'retType      = {0}'.format(retType)
-        
+        print('In simulateAuction(...)')
+        print('agentType    = {0}'.format(agentType))
+        print('nGames       = {0}'.format(nGames))
+        print('m            = {0}'.format(m))
+        print('minValuation = {0}'.format(minValuation))
+        print('maxValuation = {0}'.format(maxValuation))
+        print('retType      = {0}'.format(retType))
+
     if retType == 'bids':
         ret = numpy.zeros((nGames,nAgents,m))
     elif retType == 'firstPrice' or retType == 'hob':
@@ -58,10 +58,10 @@ def simAuctionHelper(**kwargs):
     
     agents = [agentFactory(agentType = atype, m = m, vmin = minValuation, vmax = maxValuation) for atype in agentType]
     
-    for itr in xrange(nGames):
+    for itr in range(nGames):
         if verbose:
-            print 'running serial game {0}'.format(itr)
-                
+            print('running serial game {0}'.format(itr))
+
         if retType == 'firstPrice' or retType == 'secondPrice' or retType == 'hob':
             gameBids = numpy.zeros((nAgents,m))   
         
@@ -96,7 +96,7 @@ def simAuctionHelper(**kwargs):
             ret[itr,:] = numpy.max( numpy.delete(gameBids,selfIdx,0), 0 )
             
         elif retType == 'secondPrice':
-            for goodIdx in xrange(gameBids.shape[1]):
+            for goodIdx in range(gameBids.shape[1]):
                 goodBids = gameBids[:,m]
                 goodArgMax = numpy.argmax(goodBids)
                 ret[itr,goodIdx] = numpy.max(numpy.delete(goodBids,goodArgMax))
@@ -197,19 +197,18 @@ def simulateAuction(**kwargs):
                              "\t Must specify selfIdx when retType == 'hob'")
     
     if verbose:
-        print 'In simulateAuction(...)'
-        print 'agentType    = {0}'.format(agentType)
-        print 'nGames       = {0}'.format(nGames)
-        print 'parallel     = {0}'.format(parallel)
+        print('In simulateAuction(...)')
+        print('agentType    = {0}'.format(agentType))
+        print('nGames       = {0}'.format(nGames))
+        print('parallel     = {0}'.format(parallel))
         if parallel:
-            print 'nProc    = {0}'.format(nProc)
-        print 'm            = {0}'.format(m)
-        print 'minValuation = {0}'.format(minValuation)
-        print 'maxValuation = {0}'.format(maxValuation)
-        print 'retType      = {0}'.format(retType)
-        print 'l            = {0}'.format(l)
-        
-    
+            print('nProc    = {0}'.format(nProc))
+        print('m            = {0}'.format(m))
+        print('minValuation = {0}'.format(minValuation))
+        print('maxValuation = {0}'.format(maxValuation))
+        print('retType      = {0}'.format(retType))
+        print('l            = {0}'.format(l))
+
     ret = []
     if parallel:
         pool = multiprocessing.Pool(nProc)
@@ -218,14 +217,14 @@ def simulateAuction(**kwargs):
         nGameList[-1] += (nGames % nProc)
         
         if verbose:
-            print 'Running parallel simulation.'
-            print 'Number of cores = {0}'.format(nProc)
-            print 'Number of simulations per core = {0}'.format(nGameList)
-            print 'Total Number of simulations = {0}'.format((sum(nGameList)))
-            
+            print('Running parallel simulation.')
+            print('Number of cores = {0}'.format(nProc))
+            print('Number of simulations per core = {0}'.format(nGameList))
+            print('Total Number of simulations = {0}'.format((sum(nGameList))))
+
         results = []
         
-        for p in xrange(nProc):
+        for p in range(nProc):
             subArgs = {}
             subArgs.update(kwargs)
             subArgs['parallel'] = False

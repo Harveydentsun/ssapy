@@ -27,23 +27,23 @@ def comp2Agents(**kwargs):
     verbose      = kwargs.get('verbose', True)
     
     if verbose:
-        print ''
-        print 'In comp2Agents(...)'
-        print 'oDir         = {0}'.format(oDir)
-        
-        print 'agentType1   = {0}'.format(agentType1)
-        print 'n1           = {0}'.format(n1)
-        
-        print 'agentType2   = {0}'.format(agentType2)
-        print 'n2           = {0}'.format(n2)
-        
-        print 'm            = {0}'.format(m)
-        print 'nGames       = {0}'.format(nGames)
-        print 'minValuation = {0}'.format(minValuation)
-        print 'maxValuation = {0}'.format(maxValuation)
-        
-        print ''  
-    
+        print('')
+        print('In comp2Agents(...)')
+        print('oDir         = {0}'.format(oDir))
+
+        print('agentType1   = {0}'.format(agentType1))
+        print('n1           = {0}'.format(n1))
+
+        print('agentType2   = {0}'.format(agentType2))
+        print('n2           = {0}'.format(n2))
+
+        print('m            = {0}'.format(m))
+        print('nGames       = {0}'.format(nGames))
+        print('minValuation = {0}'.format(minValuation))
+        print('maxValuation = {0}'.format(maxValuation))
+
+        print('')
+
     if parallel:
         pool = multiprocessing.Pool(nProc)
         
@@ -51,14 +51,14 @@ def comp2Agents(**kwargs):
         nGameList[-1] += (nGames % nProc)
         
         if verbose:
-            print 'Running parallel simulation.'
-            print 'Number of cores = {0}'.format(nProc)
-            print 'Number of simulations per core = {0}'.format(nGameList)
-            print 'Total Number of simulations = {0}'.format((sum(nGameList)))
-            
+            print('Running parallel simulation.')
+            print('Number of cores = {0}'.format(nProc))
+            print('Number of simulations per core = {0}'.format(nGameList))
+            print('Total Number of simulations = {0}'.format((sum(nGameList))))
+
         results = []
         
-        for p in xrange(nProc):
+        for p in range(nProc):
             subArgs = copy.deepcopy(kwargs)
             subArgs.update(kwargs)
             subArgs['parallel'] = False
@@ -84,7 +84,7 @@ def comp2Agents(**kwargs):
                                        nPrice  = 2,
                                        reserve = 0)
         
-        for i in xrange(n1):
+        for i in range(n1):
             agent = agentFactory(agentType = agentType1, 
                                  m         = m, 
                                  vmin      = minValuation, 
@@ -95,7 +95,7 @@ def comp2Agents(**kwargs):
             
             auction.attachAgents(agent)
                                  
-        for i in xrange(n2):
+        for i in range(n2):
             agent = agentFactory(agentType = agentType2, 
                                  m         = m, 
                                  vmin      = minValuation, 
@@ -107,15 +107,15 @@ def comp2Agents(**kwargs):
         
         agentSurplus = numpy.zeros((nGames,n1+n2))
         
-        for itr in xrange(nGames):
+        for itr in range(nGames):
             if verbose:
-                print 'Simulating {0} out of {1} auctions'.format(itr,nGames)
+                print('Simulating {0} out of {1} auctions'.format(itr, nGames))
             [agent.randomValuation() for agent in auction.agentList]
             
             if verbose:
                 for idx, agent in enumerate(auction.agentList):
-                    print 'agent[{0}] = {1} ; l = {2}, v = {3}'.format(idx, agent.type(), agent.l, agent.v)
-            
+                    print('agent[{0}] = {1} ; l = {2}, v = {3}'.format(idx, agent.type(), agent.l, agent.v))
+
             auction.runAuction()
             
             auction.notifyAgents()
@@ -125,8 +125,8 @@ def comp2Agents(**kwargs):
             agentSurplus[itr,:] = surplus
             
             if verbose:
-                print 'Agent Surplus = {0}'.format(surplus)
-        
+                print('Agent Surplus = {0}'.format(surplus))
+
     if oDir:
         oDir = os.path.realpath(oDir)
         if not os.path.exists(oDir):

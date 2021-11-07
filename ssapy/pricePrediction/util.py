@@ -4,6 +4,10 @@ import numpy
 from scipy.stats import norm
 from ssapy.pricePrediction.jointGMM import jointGMM
 
+from ssapy.agents import agentFactory
+from ssapy.strategies import straightMU,averageMU,straightMU8
+from ssapy.scpp.depreciated import margDistSCPP
+
 import time
 import os
 import itertools
@@ -27,7 +31,7 @@ def apprxMargKL(clf1, clf2, nSamples = 1000):
 def apprxJointGmmKL(clf1, clf2, nSamples = 1000, verbose = True):
     
     if verbose:
-        print 'Approximating symmetric Kl-div with {0} samples'.format(nSamples)
+        print('Approximating symmetric Kl-div with {0} samples'.format(nSamples))
         start = time.time()
     samples1 = clf1.sample(n_samples = nSamples)
     samples2 = clf2.sample(n_samples = nSamples)
@@ -39,8 +43,8 @@ def apprxJointGmmKL(clf1, clf2, nSamples = 1000, verbose = True):
     d2 = numpy.mean(f2 - g2)
     
     if verbose:
-        print 'Approximated sym kl-div with {0} samples in {1} seconds'.format(nSamples,time.time()-start)
-    
+        print('Approximated sym kl-div with {0} samples in {1} seconds'.format(nSamples, time.time() - start))
+
     return d1 + d2
     
 def pltMargFromJoint(**kwargs):
@@ -67,7 +71,7 @@ def pltMargFromJoint(**kwargs):
     
     fig = plt.figure()
     ax  = plt.subplot(111)
-    for goodIdx in xrange(nGoods):
+    for goodIdx in range(nGoods):
         margDist = numpy.zeros(X.shape[0])
         for (w,mean,cov) in zip(clf.weights_,clf.means_, clf.covars_):
             margMean = mean[goodIdx]
@@ -121,9 +125,9 @@ def plotMargGMM(**kwargs):
     
 def aicFit(X, compRange = range(1,6), minCovar = 9, covarType = 'full', verbose = True):
     if verbose:
-        print 'starting aicFit(...)'
-        print 'compRange = {0}'.format(compRange)
-        print 'minCovar  = {0}'.format(minCovar)
+        print('starting aicFit(...)')
+        print('compRange = {0}'.format(compRange))
+        print('minCovar  = {0}'.format(minCovar))
         start = time.time()
         
     clfList = [mixture.GMM(n_components = c, min_covar = minCovar, \
@@ -136,8 +140,8 @@ def aicFit(X, compRange = range(1,6), minCovar = 9, covarType = 'full', verbose 
     argMinAic = numpy.argmin(aicList)
     
     if verbose:
-        print 'Finished aicFit(...) in {0} seconds'.format(time.time()-start)
-        
+        print('Finished aicFit(...) in {0} seconds'.format(time.time() - start))
+
     return clfList[argMinAic], aicList, compRange
 
 def drawGMM(clf, nSamples = 8, minPrice = 0, maxPrice = 50):
@@ -173,14 +177,14 @@ def simulateAuctionMargGMM( **kwargs ):
         
     winningBids = numpy.zeros((nGames,m))
     
-    for g in xrange(nGames):
+    for g in range(nGames):
         
-        agentList = [agentFactory(agentType = agentType, m = m) for i in xrange(nAgents)]
+        agentList = [agentFactory(agentType = agentType, m = m) for i in range(nAgents)]
         
         if clfList == None:
             samples = ((maxPrice - minPrice) *numpy.random.rand(nAgents,nSamples,m)) + minPrice
             expectedPrices = numpy.mean(samples,1)
-            bids = numpy.atleast_2d([agent.bid(pointPricePrediction = expectedPrices[i,:]) for idx, agent in enumerate(agentList)])
+            bids = numpy.atleast_2d([agent.bid(pointPricePrediction = expectedPrices[i,:]) for i, agent in enumerate(agentList)])
                     
         elif isinstance(clfList, list):
             
@@ -215,9 +219,9 @@ def simulateAuctionJointGMM(**kwargs):
     
     winningBids = numpy.zeros((nGames,m))
     
-    for g in xrange(nGames):
+    for g in range(nGames):
         
-        agentList = [agentFactory(agentType = agentType, m = m, vmin = minValuation, vmax = maxValuation) for i in xrange(nAgents)]
+        agentList = [agentFactory(agentType = agentType, m = m, vmin = minValuation, vmax = maxValuation) for i in range(nAgents)]
         
         if gmm is None:
             #choose randomly from the range of the valuation
@@ -246,7 +250,7 @@ def simulateAuctionJointGMM(**kwargs):
         elif isinstance(gmm, jointGMM):
             bids = numpy.zeros((nAgents,m))
             
-            for agentIdx, agent in enumerate(agents):
+            for agentIdx, agent in enumerate(agentList):
                 bids[agentIdx] = agent.bid(pricePrediction = gmm) 
                 
         else:
@@ -278,7 +282,7 @@ def ksStat(margDist1 = None, margDist2 = None):
                                margDist2.m)
        
     margKs = []
-    for idx in xrange(margDist1.m):
+    for idx in range(margDist1.m):
         
         # test that the distributions are over the same bin indices
         # if they are not this calculation is meaninless
@@ -308,7 +312,7 @@ def klDiv(margDist1, margDist2):
                                margDist2.m)
     
     kldSum = 0.0
-    for idx in xrange(margDist1.m):
+    for idx in range(margDist1.m):
         # test that the distributions are over the same bin indices
         # if they are not this calculation is meaninless
         numpy.testing.assert_equal(margDist1.data[idx][1],
@@ -345,7 +349,7 @@ def updateDist(currDist = None, newDist = None, kappa = None, verbose = True, ze
     numpy.testing.assert_equal(currDist.m, newDist.m)
     
     updatedDist = []
-    for idx in xrange(currDist.m):
+    for idx in range(currDist.m):
         
         # test that the distributions are over the same bin indices
         # if they are not this calculation is meaninless
@@ -408,7 +412,7 @@ class symmetricDPPworker(object):
         if self.args['agentType'] == 'straightMU':
             
             agentList = []
-            for i in xrange(self.args['nAgents']):
+            for i in range(self.args['nAgents']):
                 agentList.append(straightMU(m=self.args['m']))
             
             bids = numpy.atleast_2d([agent.bid(margDistPrediction = margDistPrediciton) for agent in agentList])
@@ -417,7 +421,7 @@ class symmetricDPPworker(object):
             return numpy.max(bids,0)
         
         elif self.args['agentType'] == 'straightMU8':
-            agentList = [straightMU8(m=self.args['m']) for i in xrange(self.args['nAgents'])]
+            agentList = [straightMU8(m=self.args['m']) for i in range(self.args['nAgents'])]
             
             bids = numpy.atleast_2d([agent.bid(margDistPrediction = margDistPrediciton) for agent in agentList])
             
@@ -428,7 +432,7 @@ class symmetricDPPworker(object):
         elif self.args['agentType'] == 'targetPriceDist':
             
             agentList = []
-            for i in xrange(self.args['nAgents']):
+            for i in range(self.args['nAgents']):
                 agentList.append(targetPriceDist(m=self.args['m']))
             
             
@@ -453,14 +457,14 @@ class symmetricDPPworker(object):
             return numpy.max(bids,0)
         
         elif self.args['agentType'] == 'targetMUS8':
-            agentList = [targetMUS8(m=self.args['m']) for i in xrange(self.args['nAgents'])]
+            agentList = [targetMUS8(m=self.args['m']) for i in range(self.args['nAgents'])]
             
             bids = numpy.atleast_2d([agent.bid(margDistPrediction = margDistPrediciton) for agent in agentList])
             
             return numpy.max(bids,0)
         
         elif self.args['agentType'] == 'targetMU8':
-            agentList = [targetMU8(m=self.args['m']) for i in xrange(self.args['nAgents'])]
+            agentList = [targetMU8(m=self.args['m']) for i in range(self.args['nAgents'])]
             
             bids = numpy.atleast_2d([agent.bid(margDistPrediction = margDistPrediciton) for agent in agentList])
             
@@ -470,7 +474,7 @@ class symmetricDPPworker(object):
             
 #            agent = riskAware(m = self.args['m'])
             agentList = []
-            for i in xrange(self.args['nAgents']):
+            for i in range(self.args['nAgents']):
                 agentList.append(riskAware(m=self.args['m']))
             
             bids=[numpy.array(agent.bid({'margDistPrediction': margDistPrediciton})).astype('float') for agent in agentList]
@@ -478,6 +482,6 @@ class symmetricDPPworker(object):
             return numpy.max(bids,0)
             
         else:
-            print 'symmetricDPPworker.__call(self.margDistPrediction)'
-            print 'Unknown Agent Type: {0}'.format(self.args['agentType'])
+            print('symmetricDPPworker.__call(self.margDistPrediction)')
+            print('Unknown Agent Type: {0}'.format(self.args['agentType']))
             raise AssertionError

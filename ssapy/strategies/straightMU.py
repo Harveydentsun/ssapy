@@ -19,25 +19,25 @@ import numpy
 def straightMU(bundles, revenue, pricePrediction, n_samples, verbose = False):
     
     if verbose:
-        print "straightMU - Drawing {0} samples.".format(n_samples)
-        
+        print("straightMU - Drawing {0} samples.".format(n_samples))
+
     samples = pricePrediction.sample(n_samples = n_samples)
     
     if verbose:
-        print "Samples:"
-        print "{0}".format(samples)
-    
+        print("Samples:")
+        print("{0}".format(samples))
+
     expectedPrices = numpy.mean(samples, 0)
     
     if verbose:
-        print "Expected Price Vector: {0}".format(expectedPrices)
-    
+        print("Expected Price Vector: {0}".format(expectedPrices))
+
     return straightMV( bundles, revenue, expectedPrices, verbose)
 
 def straightMUa(bundles, revenue, pricePrediction, verbose = False):
     if verbose:
-        print "straightMUa"
-        
+        print("straightMUa")
+
     expectedPrices = pricePrediction.expectedValue()
     
     return straightMV(bundles, revenue, expectedPrices, verbose)

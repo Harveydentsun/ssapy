@@ -20,19 +20,18 @@ def targetPrice(bundles, revenue, pricePrediction, verbose = False):
     ppView      = numpy.atleast_1d(pricePrediction)
     
     if verbose:
-        print "Computing bid via targetPrice strategy."
+        print("Computing bid via targetPrice strategy.")
 
-        
     optBundle = acq(bundleView, revenueView, ppView, verbose)[0]
 
     bid = ppView.copy()
     bid[~optBundle] = 0.0
     
     if verbose:
-        print "Optimal Bundle   = {0}".format(optBundle)
-        print "Price Prediction = {0}".format(ppView)
-        print "bid              = {0}".format(bid)
-        
+        print("Optimal Bundle   = {0}".format(optBundle))
+        print("Price Prediction = {0}".format(ppView))
+        print("bid              = {0}".format(bid))
+
     return bid
 
 def targetPrice8(bundles, revenue, pricePrediction, verbose = False):
@@ -55,6 +54,7 @@ def targetPrice256(bundles, revenue, pricePrediction, verbose = False):
     expectedPrices = numpy.mean(samples,0)
     
     return targetPrice(bundles, revenue, expectedPrices, verbose)
+
 if __name__ == "__main__":
     from ssapy.util import listBundles
     from ssapy.agents.marketSchedule import listRevenue
@@ -64,10 +64,10 @@ if __name__ == "__main__":
     v = [20,10]
     bundles = listBundles(2)
     rev = listRevenue(bundles, v, l)
-    
-    print bundles
-    print rev
-    
+
+    print(bundles)
+    print(rev)
+
     bid = targetPrice(bundles,rev,pp,True)
         
     

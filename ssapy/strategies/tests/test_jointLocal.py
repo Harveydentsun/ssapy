@@ -18,15 +18,15 @@ class test_jointLocalBid(unittest.TestCase):
         
     def test_jointLocalUpdate(self):
         ibids = [25.,25.]
-        print ibids
+        print(ibids)
         targetBid = 0
         ibids[targetBid] = \
             jointLocalUpdate(self.bundles2d, self.revenue2d, 
                              ibids,targetBid, 
                              self.samples2d, True)
-        
-        print ibids
-        
+
+        print(ibids)
+
     def test_jointLocal1(self):
         """
         Updates computed by hand given:

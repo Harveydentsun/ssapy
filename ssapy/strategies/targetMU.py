@@ -54,19 +54,19 @@ def targetMU(bundles, revenue, pricePrediction, nSamples, verbose = False):
                               bids.shape[0] = bundles.shape[1]
     """
     if verbose:
-        print "targetMU"
-        print "\tDrawing {0} price samples.".format(pricePrediction)
-    
+        print("targetMU")
+        print("\tDrawing {0} price samples.".format(pricePrediction))
+
     samples = pricePrediction.sample(nSamples = nSamples)
     
     if verbose:
-        print "\tSapmles:"
-        print "{0}".format(samples)
-        
+        print("\tSapmles:")
+        print("{0}".format(samples))
+
     expectedPrices = numpy.mean(samples,0)
     if verbose:
-        print "\tExpected Price Vector = {0}".format(expectedPrices)
-        
+        print("\tExpected Price Vector = {0}".format(expectedPrices))
+
     return targetMV( bundles, revenue, expectedPrices, verbose )
     
     

@@ -5,7 +5,7 @@ Date:      12/2/2011
 
 A class implementing a simultaneous auction.
 """
-from ssapy.agents.agentBase import agentBase
+from ssapy.agents import agentFactory
 from ssapy.auctions.auctionBase import *
 
 
@@ -57,12 +57,12 @@ class simultaneousAuction(auctionBase):
         """        
         if isinstance(agentList,list):
             for agent in agentList:
-                numpy.testing.assert_(isinstance(agent,agentBase))
+                numpy.testing.assert_(isinstance(agent,agentFactory))
                 self.agentList.append(agent)
-        elif isinstance(agentList,agentBase):
+        elif isinstance(agentList,agentFactory):
             self.agentList.append(agentList)
         else:
-            print 'Must specify a list of agents of subtype agentBase or a single such agent.'
+            print('Must specify a list of agents of subtype agentBase or a single such agent.')
             raise AssertionError
         
     def removeAgent(self,agentId):
@@ -89,7 +89,7 @@ class simultaneousAuction(auctionBase):
         # if there is more than one agent bidding the highest price
         # pick the winner at random.
         winners = numpy.zeros(bids.shape[1],dtype=numpy.float)
-        for m in xrange(bids.shape[1]):
+        for m in range(bids.shape[1]):
             maxBids = numpy.nonzero(bids[:,m] == numpy.max(bids[:,m]))[0]
             if maxBids.shape[0] > 1:
                 numpy.random.shuffle(maxBids)        
@@ -105,7 +105,7 @@ class simultaneousAuction(auctionBase):
         winners[winningBids < self.reserve] = numpy.nan
         
         #if the winning bids are not greater than the reserve,
-        finalPrices = numpy.atleast_1d([sorted(bids[:,i],reverse=True)[nPrice-1] for i in xrange(bids.shape[1])])
+        finalPrices = numpy.atleast_1d([sorted(bids[:,i],reverse=True)[nPrice-1] for i in range(bids.shape[1])])
         
         finalPrices[finalPrices < reserve] = reserve
         
@@ -134,7 +134,7 @@ class simultaneousAuction(auctionBase):
             msg="self.winningBids is not yet valid.")
         
         #iterate through agents
-        for agentIdx in xrange(len(self.agentList)):
+        for agentIdx in range(len(self.agentList)):
             
             #initialize agent's bundle notifications to zeros of appropriate shape
             self.agentList[agentIdx].bundleWon = numpy.zeros(self.winners.shape[0])

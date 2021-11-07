@@ -14,9 +14,9 @@ def bruteForceS( bundleRevenueDict,  evalSamples = None, min=0.0, max=50.0, step
         if es > maxSurplus:
             bid = numpy.atleast_1d(c)
             maxSurplus = es
-            print bid
-            print maxSurplus
-            
+            print(bid)
+            print(maxSurplus)
+
     if ret == 'bid':
         return bid
     elif ret == 'all':

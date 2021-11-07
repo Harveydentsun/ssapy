@@ -13,8 +13,8 @@ from ssapy.strategies.straightMV import straightMV
 
 def averageMU(bundles, revenue, pricePrediction, nSamples, verbose = False):
     if verbose:
-        print "averageMU - Drawing {0} samples.".format(nSamples)
-        
+        print("averageMU - Drawing {0} samples.".format(nSamples))
+
     bundleView = numpy.atleast_2d(bundles)
     
     samples = pricePrediction.sample(n_samples = nSamples)
@@ -28,8 +28,8 @@ def averageMU(bundles, revenue, pricePrediction, nSamples, verbose = False):
     accum /= nSamples
     
     if verbose:
-        print "bid = {0}".format(accum)
-        
+        print("bid = {0}".format(accum))
+
     return accum
     
 def averageMU8(bundles, revenue, pricePrediction, verbose = False):
